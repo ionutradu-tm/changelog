@@ -73,6 +73,11 @@ function changelog {
         cat $CHANGELOG | sort -rn | uniq
 }
 
+######################## END functions ################
+
+if [[ ${FORCE_CLONE,,} == "yes" ]];then
+    rm -rf $REPO_PATH
+fi
 
 echo "clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master"
 clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master
