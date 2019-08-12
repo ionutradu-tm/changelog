@@ -73,6 +73,38 @@ function changelog {
         cat $CHANGELOG | sort -rn | uniq
 }
 
+# Tag commit. If the commit is not provided the last commit will be tagged
+# ARG1: repo name
+# ARG2: local PATH to store the repo
+# ARG3: repo username
+# ARG4: TAG
+# ARG5: commit sha (if the commit sha is missing the last commit will be tagged)
+#
+function tag_commit_sha(){
+        local REPO=$1
+        local REPO_PATH=$2
+        local USER=$3
+        local NEW_TAG=$4
+        local COMMIT_SHA=$5
+
+        if [ -d "$REPO_PATH" ]; then
+                if [[ -z $COMMIT_SHA ]]; then
+                        COMMIT_SHA=$(git log -n 1 |  head -n 1 |  cut -d\  -f2)
+                fi
+                git tag $NEW_TAG $COMMIT_SHA
+                echo "git tag $NEW_TAG $COMMIT_SHA"
+                git push origin $NEW_TAG
+                echo "git push origin $NEW_TAG"
+
+        else
+                echo "Please clone repository $REPO first"
+                return 2
+        fi
+
+}
+
+
+
 ######################## END functions ################
 
 if [[ ${FORCE_CLONE,,} == "yes" ]];then
@@ -93,8 +125,8 @@ if [[ -n $SECOND_TAG ]];then
 fi
 #add production tag if exists
 if [[ -n $PROD_TAG ]];then
-        #tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA
-        echo "tag prod"
+        tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA
+        echo "tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA"
 fi
 
 if [[ -n $FIRST_TAG ]] && [[ -n $SECOND_TAG ]];then
