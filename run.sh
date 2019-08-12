@@ -88,8 +88,8 @@ fi
 
 #add build tag
 if [[ -n $SECOND_TAG ]];then
-    echo "tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $NEW_TAG $COMMIT_SHA"
-    tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $NEW_TAG $COMMIT_SHA
+    echo "tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $SECOND_TAG $COMMIT_SHA"
+    tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $SECOND_TAG $COMMIT_SHA
 fi
 #add production tag if exists
 if [[ -n $PROD_TAG ]];then
