@@ -8,7 +8,8 @@ REPO_PATH=$WERCKER_CACHE_DIR"/my_tmp/"$REPO_NAME
 FORCE_CLONE=$WERCKER_CHANGELOG_FORCE_CLONE
 PROD_TAG=$WERCKER_CHANGELOG_PROD_TAG
 #TAG_PATH=$WERCKER_SOURCE_DIR"/tag"
-CHANGELOG=$WERCKER_OUTPUT_DIR"/changelog-"$REPO_NAME
+CHANGELOG_FILE=$WERCKER_OUTPUT_DIR"/changelog-"$REPO_NAME
+CHANGELOG_TMP_FILE=$WERCKER_OUTPUT_DIR"/changelog-"$REPO_NAME"tmp"
 FIRST_TAG=$WERCKER_CHANGELOG_FIRST_TAG
 SECOND_TAG=$WERCKER_CHANGELOG_SECOND_TAG
 COMMIT_SHA=$WERCKER_CHANGELOG_COMMIT_SHA
@@ -68,9 +69,10 @@ function changelog {
         local FIRST_TAG=$1
         local SECOND_TAG=$2
 
-        git log  --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG |  grep -i -w -Eo "ESDT-[0-9]+" | tr '[:lower:]' '[:upper:]'>$CHANGELOG
+        git log  --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG |  grep -i -w -Eo "ESDT-[0-9]+" | tr '[:lower:]' '[:upper:]'| cut -d\- -f1,2 | cut -d_ -f1>$CHANGELOG_TMP_FILE
         #git log  --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep "Merge pull"  | cut -d\/ -f2- | cut -d\  -f1| tr '[:lower:]' '[:upper:]' >>$CHANGELOG
-        cat $CHANGELOG | sort -rn | uniq
+        cat $CHANGELOG_TMP_FILE | sort -rn | uniq > $CHANGELOG_FILE
+        cat $CHANGELOG_FILE
 }
 
 # Tag commit. If the commit is not provided the last commit will be tagged
@@ -107,12 +109,9 @@ function tag_commit_sha(){
 
 ######################## END functions ################
 
-if [[ ${FORCE_CLONE,,} == "yes" ]];then
-    rm -rf $REPO_PATH
-fi
 
-echo "clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master"
-clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master
+echo "clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master $FORCE_CLONE"
+clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master $FORCE_CLONE
 if [ $? -ne 0 ]; then
         echo "Branch $SOURCE_BRANCH not found"
         exit 3
