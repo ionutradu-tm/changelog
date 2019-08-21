@@ -73,6 +73,7 @@ function changelog {
         #git log  --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep "Merge pull"  | cut -d\/ -f2- | cut -d\  -f1| tr '[:lower:]' '[:upper:]' >>$CHANGELOG
         cat $CHANGELOG_TMP_FILE | sort -rn | uniq > $CHANGELOG_FILE
         cat $CHANGELOG_FILE
+        rm -f $CHANGELOG_TMP_FILE
 }
 
 # Tag commit. If the commit is not provided the last commit will be tagged

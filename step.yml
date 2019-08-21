@@ -1,5 +1,5 @@
 name: changelog
-version: 0.0.4
+version: 0.0.5
 summary: Tag build number or additional tag; Generate changelog between two tags
 tags:
   - branch name
