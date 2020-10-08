@@ -2,9 +2,9 @@
 
 #VARS:
 
-####################
-Expected environment variables
-####################
+#################################
+#Expected environment variables #
+#################################
 #REPO_USER
 #REPO_NAME
 #FORCE_CLONE force repository clone
@@ -18,6 +18,7 @@ Expected environment variables
 REPO_PATH="/my_tmp/"$REPO_NAME
 CHANGELOG_FILE="/changelog-"$REPO_NAME
 CHANGELOG_TMP_FILE="/changelog-"$REPO_NAME"tmp"
+GIT_URL="https://${GIT_TOKEN}@github.com/${REPO_USER}/${REPO_NAME}.git"
 
 ###### end VARS ##################
 
@@ -46,7 +47,7 @@ function clone_pull_repo (){
                 mkdir -p $REPO_PATH
                 cd $REPO_PATH
                 echo "git clone https://token@github.com/$USER/$REPO.git "
-                git clone https://${TOKEN}@github.com/$USER/$REPO.git
+                git clone ${GIT_URL}
                 if [ $? -eq 0 ]; then
                         echo "Repository $REPO created"
                 else
@@ -56,7 +57,7 @@ function clone_pull_repo (){
                 fi
         fi
         echo "Pull repository: $REPO"
-        cd $REPO_PATH
+        cd $REPO
         git checkout $BRANCH
         if [ $? -eq 0 ]; then
                 echo "Succesfully switched to branch $BRANCH"
@@ -95,15 +96,14 @@ function tag_commit_sha(){
         local NEW_TAG=$4
         local COMMIT_SHA=$5
 
-        if [ -d "$REPO_PATH" ]; then
+        if [ -d ".git" ]; then
                 if [[ -z $COMMIT_SHA ]]; then
                         COMMIT_SHA=$(git log -n 1 |  head -n 1 |  cut -d\  -f2)
                 fi
                 git tag $NEW_TAG $COMMIT_SHA
                 echo "git tag $NEW_TAG $COMMIT_SHA"
-                git push origin $NEW_TAG
                 echo "git push origin $NEW_TAG"
-
+                git push  -f ${GIT_URL} refs/tags/$NEW_TAG
         else
                 echo "Please clone repository $REPO first"
                 return 2
