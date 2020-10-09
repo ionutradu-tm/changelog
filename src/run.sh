@@ -82,6 +82,7 @@ function changelog {
         git log  --merges --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG |  grep -i  -Eo "(${PROJECT_ID})+-[0-9]+" | tr '[:lower:]' '[:upper:]'| cut -d\- -f1,2 | cut -d_ -f1>$CHANGELOG_TMP_FILE
         cat $CHANGELOG_TMP_FILE | sort -rn | uniq > $CHANGELOG_FILE
         cat $CHANGELOG_FILE
+        ls -l
         rm -f $CHANGELOG_TMP_FILE
 }
 
