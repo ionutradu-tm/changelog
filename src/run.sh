@@ -17,6 +17,7 @@
 #PROJECT_ID
 
 MY_HOME=$(pwd)
+echo $MY_HOME
 REPO_PATH="my_tmp/"$REPO_NAME
 CHANGELOG_FILE=${MY_HOME}"/changelog-"$REPO_NAME
 CHANGELOG_TMP_FILE=${MY_HOME}"/changelog-"$REPO_NAME"tmp"
@@ -81,6 +82,7 @@ function changelog() {
   git log --merges --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep -i -Eo "(${PROJECT_ID})+-[0-9]+" | tr '[:lower:]' '[:upper:]' | cut -d\- -f1,2 | cut -d_ -f1 >$CHANGELOG_TMP_FILE
   cat $CHANGELOG_TMP_FILE | sort -rn | uniq >$CHANGELOG_FILE
   cat $CHANGELOG_FILE
+  echo $CHANGELOG_FILE
   ls -l ${MY_HOME}
   rm -f $CHANGELOG_TMP_FILE
 }
