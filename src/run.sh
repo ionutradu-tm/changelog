@@ -19,7 +19,7 @@
 REPO_PATH="/my_tmp/"$REPO_NAME
 CHANGELOG_FILE="/changelog-"$REPO_NAME
 CHANGELOG_TMP_FILE="/changelog-"$REPO_NAME"tmp"
-GIT_URL="https://${GIT_TOKEN}@github.com/${REPO_USER}/${REPO_NAME}.git"
+GIT_URL="https://${TOKEN}@github.com/${REPO_USER}/${REPO_NAME}.git"
 
 ###### end VARS ##################
 
@@ -56,6 +56,8 @@ function clone_pull_repo (){
                         rm -rf $REPO_PATH
                         return 3
                 fi
+        else
+          cd $REPO_PATH
         fi
         echo "Pull repository: $REPO"
         cd $REPO
