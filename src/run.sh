@@ -14,6 +14,7 @@
 #SECOND_TAG current build number
 #COMMIT_SHA current commit_sha build
 #TOKEN git hub token
+#PROJECT_ID
 
 REPO_PATH="/my_tmp/"$REPO_NAME
 CHANGELOG_FILE="/changelog-"$REPO_NAME
@@ -75,8 +76,7 @@ function changelog {
         local FIRST_TAG=$1
         local SECOND_TAG=$2
 
-        git log  --merges --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG |  grep -i  -Eo "ESDT-[0-9]+" | tr '[:lower:]' '[:upper:]'| cut -d\- -f1,2 | cut -d_ -f1>$CHANGELOG_TMP_FILE
-        #git log  --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep "Merge pull"  | cut -d\/ -f2- | cut -d\  -f1| tr '[:lower:]' '[:upper:]' >>$CHANGELOG
+        git log  --merges --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG |  grep -i  -Eo "(${PROJECT_ID})+-[0-9]+" | tr '[:lower:]' '[:upper:]'| cut -d\- -f1,2 | cut -d_ -f1>$CHANGELOG_TMP_FILE
         cat $CHANGELOG_TMP_FILE | sort -rn | uniq > $CHANGELOG_FILE
         cat $CHANGELOG_FILE
         rm -f $CHANGELOG_TMP_FILE
