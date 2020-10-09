@@ -16,9 +16,9 @@
 #TOKEN git hub token
 #PROJECT_ID
 
-REPO_PATH="/my_tmp/"$REPO_NAME
-CHANGELOG_FILE="/changelog-"$REPO_NAME
-CHANGELOG_TMP_FILE="/changelog-"$REPO_NAME"tmp"
+REPO_PATH="my_tmp/"$REPO_NAME
+CHANGELOG_FILE="changelog-"$REPO_NAME
+CHANGELOG_TMP_FILE="changelog-"$REPO_NAME"tmp"
 GIT_URL="https://${TOKEN}@github.com/${REPO_USER}/${REPO_NAME}.git"
 
 ###### end VARS ##################
