@@ -119,7 +119,7 @@ function tag_commit_sha(){
 echo "clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master $FORCE_CLONE"
 clone_pull_repo $REPO_NAME $REPO_PATH $REPO_USER master $FORCE_CLONE
 if [ $? -ne 0 ]; then
-        echo "Branch $SOURCE_BRANCH not found"
+        echo "Failed to clone repository $REPO_NAME"
         exit 3
 fi
 
@@ -130,13 +130,13 @@ if [[ -n $SECOND_TAG ]];then
 fi
 #add production tag if exists
 if [[ -n $PROD_TAG ]];then
-        tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA
         echo "tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA"
+        tag_commit_sha $REPO_NAME $REPO_PATH $REPO_USER $PROD_TAG $COMMIT_SHA
 fi
 
 if [[ -n $FIRST_TAG ]] && [[ -n $SECOND_TAG ]];then
-        changelog $FIRST_TAG $SECOND_TAG
         echo "changelog $FIRST_TAG $SECOND_TAG"
+        changelog $FIRST_TAG $SECOND_TAG
 else
         echo "FIRST_TAG $FIRST_TAG is not set or"
         echo "SECOND_TAG $SECOND_TAG is not set"
