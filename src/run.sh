@@ -79,7 +79,7 @@ function changelog() {
   local FIRST_TAG=$1
   local SECOND_TAG=$2
 
-  git log --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep -i -Eo "(${PROJECT_ID})+-[0-9]+" | tr '[:lower:]' '[:upper:]' | cut -d\- -f1,2 | cut -d_ -f1 >$CHANGELOG_TMP_FILE
+  git log --merges --pretty=format:"%h - %an, %ar : %b: %s" $FIRST_TAG..$SECOND_TAG | grep -i -Eo "(${PROJECT_ID})+-[0-9]+" | tr '[:lower:]' '[:upper:]' | cut -d\- -f1,2 | cut -d_ -f1 >$CHANGELOG_TMP_FILE
   cat $CHANGELOG_TMP_FILE | sort -rn | uniq >$CHANGELOG_FILE
   cat $CHANGELOG_FILE
   echo $CHANGELOG_FILE
