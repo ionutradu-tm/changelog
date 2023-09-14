@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:kinetic
 COPY src/run.sh /run.sh
 RUN chmod +x /run.sh
 RUN apt update
