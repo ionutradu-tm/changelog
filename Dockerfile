@@ -1,4 +1,4 @@
-FROM ubuntu:lunar-20230731
+FROM ubuntu:23.10
 COPY src/run.sh /run.sh
 RUN chmod +x /run.sh
 RUN apt update
