@@ -1,4 +1,4 @@
-FROM ubuntu:lunar-20230731
+FROM ubuntu:mantic-20240216
 COPY src/run.sh /run.sh
 RUN chmod +x /run.sh
 RUN apt update
